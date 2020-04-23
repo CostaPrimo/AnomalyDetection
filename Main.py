@@ -9,6 +9,4 @@ link = LinkFacade.linkFacade()
 logic.inject_persistence(persistence)
 link.inject_logic(logic)
 
-persistence.printTest()
-logic.printTest()
-link.printTest()
+link.run()

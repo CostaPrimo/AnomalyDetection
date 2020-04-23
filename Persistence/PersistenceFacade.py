@@ -2,8 +2,6 @@ from Acquaintance import iPersistence
 
 
 class persistenceFacade(iPersistence.iPersistence):
-    def __init__(self):
-        self.test_text = "Persitence virker"
 
     def getStreamReadings(self, streamtype):
         return "NotImplementedYet"
@@ -17,5 +15,3 @@ class persistenceFacade(iPersistence.iPersistence):
     def getData(self, key):
         pass
 
-    def printTest(self):
-        print(self.test_text)
