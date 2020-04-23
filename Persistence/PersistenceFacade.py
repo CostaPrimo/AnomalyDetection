@@ -19,3 +19,4 @@ class persistenceFacade(iPersistence.iPersistence):
 
     def printTest(self):
         print(self.test_text)
+
