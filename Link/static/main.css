@@ -1,0 +1,55 @@
+.outerlayer {
+	width: 100%;
+	height: 1600px;
+	background-color: grey;
+}
+
+.navigation {
+	width: 3%;
+	height: 1593px;
+	background-color: blue;
+	border-style: solid;
+	float: left;
+}
+
+.header {
+	margin: auto;
+	width: 96.35%;
+	height: 160px;
+	background-color: orange;
+	border-style: solid;
+	float: right;
+}
+
+.uppermid {
+	margin: auto;
+	width: 96.35%;
+	height: 480px;
+	background-color: green;
+	border-style: solid;
+	float: right;
+}
+
+.lowermid {
+	margin: auto;
+	width: 96.35%;
+	height: 800px;
+	background-color: yellow;
+	border-style: solid;
+	float: right;
+}
+
+.bottom {
+	margin: auto;
+	width: 96.35%;
+	height: 118px;
+	border-style: solid;
+	float: right;
+}
+
+.nav {
+	font-size:24px;
+	display: block;
+	padding: 10px;
+	border-style: solid;
+}

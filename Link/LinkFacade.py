@@ -1,5 +1,5 @@
 from Acquaintance import iLink, iLogic
-
+from Link import RequestHandler
 
 class linkFacade(iLink.iLink):
 
@@ -11,7 +11,8 @@ class linkFacade(iLink.iLink):
         self.logic = iLogic
         self.test_text = "Link Virker"
 
-    def run(self): raise NotImplementedError
+    def run(self, main):
+        RequestHandler.run_app(main)
 
     def printTest(self):
         print(self.test_text)
