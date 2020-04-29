@@ -5,21 +5,6 @@ app = Flask(__name__)
 __main__ = "__main__"
 app.config['SECRET_KEY'] = 'eShVmYq3s5v8y/B?'
 
-posts = [
-    {
-        'author': 'Corey Schafer',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'April 20, 2018'
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 21, 2018'
-    }
-]
-
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -27,11 +12,9 @@ def home():
     if request.method == 'POST':
         if form.validate_on_submit():
             data = request.form.get('data')
-            print(data)
             return redirect(url_for('test2', data=data))
         return render_template('Home.html', title='Home', form=form)
     elif request.method == 'GET':
-        print("test9")
         return render_template('Home.html', title='Home', form=form)
 
 
@@ -43,6 +26,7 @@ def test():
 @app.route('/Test2', methods=['POST','GET'])
 def test2():
     data = request.args.get('data', None)
+
     return render_template('Test2.html', data=data, title="Test2")
 
 
