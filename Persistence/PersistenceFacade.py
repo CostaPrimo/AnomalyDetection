@@ -1,9 +1,15 @@
 from Acquaintance import iPersistence
-
+import types
 
 class persistenceFacade(iPersistence.iPersistence):
     def __init__(self):
         self.test_text = "Persitence virker"
+
+    def __get__(self, obj, objtype=None):
+           print("__get__")
+           if obj is None:
+               return self
+           return types.MethodType(self, obj)
 
     def getStreamReadings(self, streamtype):
         return "NotImplementedYet"
