@@ -1,5 +1,4 @@
 from Acquaintance import iLink, iLogic
-from Link import RequestHandler
 import types
 
 
@@ -19,8 +18,7 @@ class linkFacade(iLink.iLink):
         self.logic = iLogic
         self.test_text = "Link Virker"
 
-    def run(self, main):
-        RequestHandler.run_app(main)
+    def run(self, main): raise NotImplementedError
 
 
     def printTest(self, streamstype):

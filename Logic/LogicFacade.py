@@ -18,8 +18,9 @@ class logicFacade(iLogic.iLogic):
         self.test_text = "Logic Virker"
 
     def getStreamStatus(self, streamtype):
-        print("hJJJEEE")
         print(streamtype + "Fra logic facadens getStreamStatus")
+        result = self.persistence.getStreamReadings(streamtype)
+        return result + ":: og det her er fra logic facaden getStreamStatus"
 
     def getStreamMetadata(self, streamID): raise NotImplementedError
 

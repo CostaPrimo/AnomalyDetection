@@ -12,7 +12,7 @@ class persistenceFacade(iPersistence.iPersistence):
            return types.MethodType(self, obj)
 
     def getStreamReadings(self, streamtype):
-        return "NotImplementedYet"
+        return streamtype + "NotImplementedYet, from persistence facaden"
 
     def getStreamMetadata(self, streamID): raise NotImplementedError
 
