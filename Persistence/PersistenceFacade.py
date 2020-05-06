@@ -1,10 +1,11 @@
 from Acquaintance import iPersistence
+from Persistence import StreamHandler
 
 
 class persistenceFacade(iPersistence.iPersistence):
 
     def getStreamReadings(self, streamtype):
-        return "NotImplementedYet"
+        StreamHandler.purge_streams()
 
     def getStreamMetadata(self, streamID): raise NotImplementedError
 

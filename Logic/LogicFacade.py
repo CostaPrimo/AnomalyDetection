@@ -10,7 +10,7 @@ class logicFacade(iLogic.iLogic):
         self.persistence = iPersistence
 
     def getStreamStatus(self, streamtype):
-        pass
+        self.persistence.getStreamReadings("derp")
 
     def getStreamMetadata(self, streamID): raise NotImplementedError
 

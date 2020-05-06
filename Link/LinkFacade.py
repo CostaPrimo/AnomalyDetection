@@ -9,5 +9,6 @@ class linkFacade(iLink.iLink):
     def inject_logic(self, iLogic):
         self.logic = iLogic
 
-    def run(self): raise NotImplementedError
+    def run(self):
+        self.logic.getStreamStatus("derp")
 
