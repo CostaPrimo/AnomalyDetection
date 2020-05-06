@@ -1,17 +1,26 @@
 from Acquaintance import iLogic, iPersistence
+import types
 
 
 class logicFacade(iLogic.iLogic):
 
     def __init__(self):
         self.persistence = iPersistence.iPersistence
-        self.test_text = ""
+        self.test_text = "Fra logic"
+
+    def __get__(self, obj, objtype=None):
+        if obj is None:
+            return self
+        return types.MethodType(self, obj)
 
     def inject_persistence(self, iPersistence):
         self.persistence = iPersistence
         self.test_text = "Logic Virker"
 
-    def getStreamStatus(self, streamtype): raise NotImplementedError
+    def getStreamStatus(self, streamtype):
+        print(streamtype + "Fra logic facadens getStreamStatus")
+        result = self.persistence.getStreamReadings(streamtype)
+        return result + ":: og det her er fra logic facaden getStreamStatus"
 
     def getStreamMetadata(self, streamID): raise NotImplementedError
 
