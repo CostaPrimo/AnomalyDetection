@@ -2,12 +2,13 @@ from rdflib import Graph, Namespace, URIRef, Literal
 import rdflib
 import json
 import os
+import requests
 
 RDF = Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
 RDFS = Namespace('http://www.w3.org/2000/01/rdf-schema#')
 OWL = Namespace('http://www.w3.org/2002/07/owl#')
 BRICK = Namespace('https://brickschema.org/schema/1.1.0/Brick#')
-N = Namespace('')##SPØRG TIL DET HER (Hvad skal det bruges til)
+N = Namespace('http://bachelor.sdu.dk/jeppe_nick/test/example#')
 
 
 def purge_streams():
@@ -15,7 +16,6 @@ def purge_streams():
     stream_counts = {}
     for file in os.listdir("Persistence/streams"):
         tempfile = (os.path.join("Persistence/streams", file))
-        data = ""
         with open(tempfile) as json_file:
             data = json.load(json_file)
             metadata = data['Metadata']
@@ -26,7 +26,6 @@ def purge_streams():
                 stream_descriptions.append(metadata['Description'])
                 stream_counts[metadata['Description']] = 1
     print(stream_counts)
-
     '''
         if 'Readings' in data and len(data['Readings']) != 0:
             print(data['Metadata'])
@@ -39,24 +38,19 @@ def purge_streams():
 class StreamHandler:
     def __init__(self):
         self.g = Graph()
-        self.brickpath = lambda filename: '../Persistence/streams/' + filename #SPØRG TIL DET HER (Hvordan skal path se ud?)
-        self.g.parse(self.brickpath('../Persistence/Brick_expanded.ttl'), format='turtle') #SPØRG TIL DET HER (Skal denne path være den sammme?)
-        self.g.bind('rdf', RDF)
-        self.g.bind('rdfs', RDFS)
-        self.g.bind('owl', OWL)
-        self.g.bind('brick', BRICK)
-        self.g.bind('n', N)
         self.files = []
-        for file in os.listdir("/streams"):
-            tempfile = (os.path.join("/streams", file))
-            with open(file) as json_file:
+        for file in os.listdir("Persistence/streams"):
+            tempfile = (os.path.join("Persistence/streams", file))
+            with open(tempfile) as json_file:
                 data = json.load(json_file)
-                if "Readings" in data:
+                metadata = data['Metadata']
+                description = metadata['Description']
+                if description == "Temperature Value" or description == 'CO2 Value' or description == 'Humidity':
                     self.files.append(tempfile)
-                    print(tempfile)
 
-
-    def setupBuilding(self):
+    def setup_building(self):
+        del self.g
+        self.g = Graph()
         building = N['/building']
         self.g.add((building, RDF.type, BRICK['Building']))
         floor = N['/building/floors/0']
@@ -73,50 +67,96 @@ class StreamHandler:
             roomnames.append("room_%s" % number)
         for file in self.files:
             UUID = ""
-            Description = ""
-            Modality = ""
+            metadata = ""
+            description = ""
             with open(file) as json_file:
                 data = json.load(json_file)
+                metadata = data['Metadata']
                 UUID = data['uuid']
-                Description = data['Description']
-                Modality = data['Modality']
-            sensor = N['building/rooms/%s/sensor' % roomnames.pop(0)]
-            self.g.add((sensor, RDF.type, BRICK['Sensor']))
-            self.g.add((sensor, BRICK.label, Literal(UUID)))
-            self.g.add((sensor, BRICK.pointOf, rooms.pop(0)))
-        self.g.serialize('../Persistence/building.ttl', 'turtle')
+                description = metadata['Description']
+            if description == 'Temperature Value':
+                sensor = N['building/rooms/%s/temp-sensor' % roomnames.pop(0)]
+                self.g.add((sensor, RDF.type, BRICK['Temperature_Sensor']))
+                self.g.add((sensor, BRICK.label, Literal(UUID)))
+                self.g.add((sensor, BRICK.pointOf, rooms.pop(0)))
+            elif description == 'CO2 Value':
+                sensor = N['building/rooms/%s/co2-sensor' % roomnames.pop(0)]
+                self.g.add((sensor, RDF.type, BRICK['CO2_Sensor']))
+                self.g.add((sensor, BRICK.label, Literal(UUID)))
+                self.g.add((sensor, BRICK.pointOf, rooms.pop(0)))
+            elif description == 'Humidity':
+                sensor = N['building/rooms/%s/humidity' % roomnames.pop(0)]
+                self.g.add((sensor, RDF.type, BRICK['Humidity']))
+                self.g.add((sensor, BRICK.label, Literal(UUID)))
+                self.g.add((sensor, BRICK.pointOf, rooms.pop(0)))
+        self.g.serialize('Persistence/building_test.ttl', 'turtle')
+
+    def model(self):
+        brickpath = lambda filename: 'Persistence/' + filename
+        self.g.parse(brickpath('Persistence/Brick_expanded.ttl'), format='turtle')
+
+        self.g.bind('rdf', RDF)
+        self.g.bind('rdfs', RDFS)
+        self.g.bind('owl', OWL)
+        self.g.bind('brick', BRICK)
+        self.g.bind('n', N)
+
+    def loadModel(self):
         del self.g
         self.g = Graph()
-        self.g.parse('../Persistence/building.ttl', format='turtle')
+        self.g.parse('Persistence/building_test.ttl', format='turtle')
 
+    def getStreamIDs(self, type):
+        stream_q = ""
+        if type == 'temperature':
+            stream_q = \
+            '''
+            SELECT DISTINCT ?sensor_uuid
+            WHERE {
+                ?sensor   rdf:type/brick:subClassOf* brick:Temperature_Sensor .
+                
+                ?sensor   brick:label ?sensor_uuid .
+            }
+            '''
+            self.pprint(self.query(stream_q))
+            return "success"
+        elif type == 'co2':
+            stream_q = \
+                '''
+                SELECT DISTINCT ?sensor_uuid
+                WHERE {
+                    ?sensor   rdf:type/brick:subClassOf* brick:CO2_Sensor .
 
-    '''
-    def model(self):
-        g = Graph()
+                    ?sensor   brick:label ?sensor_uuid .
+                }
+                '''
+            self.pprint(self.query(stream_q))
+            return "success"
+        elif type == 'humidity':
+            stream_q = \
+                '''
+                SELECT DISTINCT ?sensor_uuid
+                WHERE {
+                    ?sensor   rdf:type/brick:subClassOf* brick:Humidity .
 
-        brickpath = lambda filename: '../Persistence/Streams/' + filename ##SPØRG TIL DET HER (Hvordan skal path se ud?)
-        g.parse(brickpath('../Persistence/Brick_expanded.ttl'), format='turtle') ##SPØRG TIL DET HER (Skal denne path være den sammme?)
+                    ?sensor   brick:label ?sensor_uuid .
+                }
+                '''
+            self.pprint(self.query(stream_q))
+            return "success"
+        else:
+            return "No such type"
 
-        g.bind('rdf', RDF)
-        g.bind('rdfs', RDFS)
-        g.bind('owl', OWL)
-        g.bind('brick', BRICK)
-        g.bind('n', N)
+#---------------------------------------------------------------------------------------------------------------------
 
-        return g
-    '''
-
-    def query(g, q):
-        r = g.query(q)
+    def query(self, q):
+        r = self.g.query(q)
         return list(map(lambda row: list(row), r))
 
+    def update(self, q):
+        r = self.g.update(q)
 
-    def update(g, q):
-        r = g.update(q)
-
-
-'''
-    def pprint(structure):
+    def pprint(self, structure):
         pretty = json.dumps(structure, sort_keys=True, indent=4, separators=(',', ': '))
         print(pretty)
-'''
+

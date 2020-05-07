@@ -10,5 +10,5 @@ class linkFacade(iLink.iLink):
         self.logic = iLogic
 
     def run(self):
-        self.logic.getStreamStatus("derp")
+        print(self.logic.getStreamStatus("humidity"))
 
