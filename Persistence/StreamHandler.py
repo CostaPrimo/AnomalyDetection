@@ -48,6 +48,8 @@ class StreamHandler:
                 if description == "Temperature Value" or description == 'CO2 Value' or description == 'Humidity':
                     self.files.append(tempfile)
 
+#----------------------------------------------------------------------------------------------------------------------
+
     def setup_building(self):
         del self.g
         self.g = Graph()
@@ -91,6 +93,8 @@ class StreamHandler:
                 self.g.add((sensor, BRICK.pointOf, rooms.pop(0)))
         self.g.serialize('Persistence/building_test.ttl', 'turtle')
 
+#----------------------------------------------------------------------------------------------------------------------
+
     def model(self):
         brickpath = lambda filename: 'Persistence/' + filename
         self.g.parse(brickpath('Persistence/Brick_expanded.ttl'), format='turtle')
@@ -100,6 +104,8 @@ class StreamHandler:
         self.g.bind('owl', OWL)
         self.g.bind('brick', BRICK)
         self.g.bind('n', N)
+
+#----------------------------------------------------------------------------------------------------------------------
 
     def loadModel(self):
         del self.g
