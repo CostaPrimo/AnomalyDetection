@@ -22,8 +22,4 @@ class linkFacade(iLink.iLink):
 
 
     def printTest(self, streamstype):
-        print("hEJJJEE")
-        logic = self.logic
-        result = logic.getStreamStatus(streamstype)
-        print("hEJJJEE2")
         return "This data is from the LinkFacade"
