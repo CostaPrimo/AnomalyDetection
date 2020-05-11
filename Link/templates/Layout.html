@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
-
+    <script src="/static/js/frontend.js"></script>
 
     {% if title %}
         <title>{{ title }}</title>
@@ -23,7 +23,7 @@
  			{% block header %}{% endblock %}
  		</div>
  		<div class="uppermid">
- 			{% block uppermid %}{% endblock %}
+ 			
  		</div>
  		<div class="lowermid">
  			{% block lowermid %}{% endblock %}

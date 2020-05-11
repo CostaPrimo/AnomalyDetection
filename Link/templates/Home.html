@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
+{% block uppermid %}
+	<button type="button" onclick="heatmap()">Try it</button>
+{% endblock uppermid %}
 {% block lowermid %}
 	<div class="content">
 		<form method= "POST" action="{{ url_for('home') }}">
