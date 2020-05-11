@@ -1,5 +1,4 @@
 from time import time
-
 from Acquaintance import iLink, iLogic
 import types
 
@@ -18,12 +17,11 @@ class linkFacade(iLink.iLink):
     def inject_logic(self, iLogic):
         self.logic = iLogic
 
-    def run(self):
+    def run(self, main):
+        print("test")
         v = time()
         print(self.logic.getStreamStatus("humidity"))
-        print(time()-v)
-
-    def run(self, main): raise NotImplementedError
+        print(time() - v)
 
     def printTest(self, streamstype):
         print("hEJJJEE")

@@ -213,6 +213,10 @@ class StreamHandler:
                 if count+1 < len(templist):
                     if time >= templist[count+1][0]:
                         count += 1
+                    else:
+                        break
+                else:
+                    break
             returnDict[key] = templist[count][1]
         return returnDict
 
