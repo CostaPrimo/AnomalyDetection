@@ -1,3 +1,6 @@
+import ApexCharts from 'apexcharts'
+type=module
+
 var options = {
           series: [{
             name: 'Jan',
@@ -111,7 +114,9 @@ var options = {
           text: 'HeatMap Chart with Color Range'
         },
         };
-        function heatmap() {
+
+      function heatmap() {
+        console.log("From the function")
         var chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
       }
