@@ -147,7 +147,7 @@ class StreamHandler:
             SELECT DISTINCT ?sensor_uuid
                 WHERE {
                     ?room     rdf:type/brick:subClassOf* brick:Room .
-                    ?sensor   rdf:type/brick:subClassOf* brick:Humidity .
+                    ?sensor   rdf:type/brick:subClassOf* brick:Temperature_Sensor .
                     
                     ?sensor   brick:pointOf ?room .
 
@@ -161,7 +161,7 @@ class StreamHandler:
                 SELECT DISTINCT ?sensor_uuid
                 WHERE {
                     ?room     rdf:type/brick:subClassOf* brick:Room .
-                    ?sensor   rdf:type/brick:subClassOf* brick:Humidity .
+                    ?sensor   rdf:type/brick:subClassOf* brick:CO2_Sensor .
                     
                     ?sensor   brick:pointOf ?room .
 
@@ -210,9 +210,10 @@ class StreamHandler:
             time = templist[0][0]+offset
             count = 0
             while time >= templist[count][0]:
-                count += 1
-            if count < len(templist):
-                returnDict[key] = templist[count][1]
+                if count+1 < len(templist):
+                    if time >= templist[count+1][0]:
+                        count += 1
+            returnDict[key] = templist[count][1]
         return returnDict
 
 #Method to be called in the facade
