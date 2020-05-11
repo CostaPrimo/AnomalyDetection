@@ -16,7 +16,6 @@ class persistenceFacade(iPersistence.iPersistence):
         self.stream_handler.setup_building()
 
     def getStreamReadings(self, streamtype):
-        #self.stream_handler.setup_building()
         self.stream_handler.loadModel()
         return self.stream_handler.getStreamReadings(streamtype)
 

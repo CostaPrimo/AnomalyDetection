@@ -17,10 +17,12 @@ N = Namespace('http://bachelor.sdu.dk/jeppe_nick/test/example#')
 def count_and_purge_streams():
     stream_descriptions = []
     stream_counts = {}
-    for file in os.listdir("Persistence/streams"):
-        tempfile = (os.path.join("Persistence/streams", file))
+    for file in os.listdir("../Persistence/streams"):
+        tempfile = (os.path.join("../Persistence/streams", file))
+        todelete = False
         with open(tempfile) as json_file:
             data = json.load(json_file)
+            metadata = data['Metadata']
             if 'Readings' in data and len(data['Readings']) != 0:
                 if metadata['Description'] in stream_descriptions:
                     count = stream_counts[metadata['Description']]
@@ -29,9 +31,10 @@ def count_and_purge_streams():
                     stream_descriptions.append(metadata['Description'])
                     stream_counts[metadata['Description']] = 1
             else:
-                os.remove(tempfile)
-                print("file deleted")
-            metadata = data['Metadata']
+                todelete = True
+        if todelete:
+            os.remove(tempfile)
+            print("file deleted")
     print(stream_counts)
 '''
 
@@ -49,7 +52,7 @@ class StreamHandler:
     def model(self):
         del self.g
         self.g = Graph()
-        brickpath = lambda filename: 'Persistence/' + filename
+        brickpath = lambda filename: '../Persistence/' + filename
         self.g.parse(brickpath('Brick_expanded.ttl'), format='turtle')
 
         self.g.bind('rdf', RDF)
@@ -57,8 +60,8 @@ class StreamHandler:
         self.g.bind('owl', OWL)
         self.g.bind('brick', BRICK)
         self.g.bind('n', N)
-        for file in os.listdir("Persistence/streams"):
-            tempfile = (os.path.join("Persistence/streams", file))
+        for file in os.listdir("../Persistence/streams"):
+            tempfile = (os.path.join("../Persistence/streams", file))
             with open(tempfile) as json_file:
                 data = json.load(json_file)
                 metadata = data['Metadata']
@@ -110,7 +113,7 @@ class StreamHandler:
                 self.g.add((sensor, RDF.type, BRICK['Humidity']))
                 self.g.add((sensor, BRICK.label, Literal(UUID)))
                 self.g.add((sensor, BRICK.pointOf, rooms.pop(0)))
-        self.g.serialize('Persistence/building_test3.ttl', 'turtle')
+        self.g.serialize('../Persistence/building_test3.ttl', 'turtle')
 
 #For loading our model and accessing/altering information in it
 #----------------------------------------------------------------------------------------------------------------------
@@ -119,7 +122,7 @@ class StreamHandler:
     def loadModel(self):
         del self.g
         self.g = Graph()
-        self.g.parse('Persistence/building_test3.ttl', format='turtle')
+        self.g.parse('../Persistence/building_test3.ttl', format='turtle')
 
     #Queries on the model
     def query(self, q):
@@ -196,7 +199,7 @@ class StreamHandler:
             ids = streams.replace(' ', '').replace('[', '').replace(']', '').replace('\n', '').replace('"', '').split(
                 ',')
             for uuid in ids:
-                with open("Persistence/streams/%s.json" % uuid)as json_file:
+                with open("../Persistence/streams/%s.json" % uuid)as json_file:
                     data = json.load(json_file)
                     rstreams[uuid] = data['Readings']
             return rstreams
