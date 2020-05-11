@@ -15,16 +15,10 @@ class logicFacade(iLogic.iLogic):
 
     def inject_persistence(self, iPersistence):
         self.persistence = iPersistence
-        self.test_text = "Logic Virker"
 
     def getStreamStatus(self, streamtype):
-        print(streamtype + "Fra logic facadens getStreamStatus")
-        result = self.persistence.getStreamReadings(streamtype)
-        return result + ":: og det her er fra logic facaden getStreamStatus"
+        return self.persistence.getStreamReadings(streamtype)
 
     def getStreamMetadata(self, streamID): raise NotImplementedError
 
     def editStreamType(self, streamID, newtype): raise NotImplementedError
-
-    def printTest(self):
-        print(self.test_text)
