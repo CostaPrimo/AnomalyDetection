@@ -6,3 +6,5 @@ Logic/__pycache__/LogicFacade.cpython-36.pyc
 Persistence/__pycache__/PersistenceFacade.cpython-36.pyc
 Persistence/__pycache__/StreamHandler.cpython-36.pyc
 .idea/inspectionProfiles/Project_Default.xml
+.idea/misc.xml
+.idea/AnomalyDetection.iml

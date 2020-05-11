@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title>Anomaly Detection</title>
+    {% endif %}
+</head>
+<body>
+	<div class="outerlayer">
+		<div class="navigation">
+			<a href="{{ url_for('home') }}" class="nav">Go to home</a>
+ 			<a href="{{ url_for('test') }}" class="nav">Go to test</a>
+ 			<a href="{{ url_for('test2') }}"class="nav">Go to test2</a>
+ 		</div>
+ 		<div class="header">
+ 			{% block header %}{% endblock %}
+ 		</div>
+ 		<div class="uppermid">
+ 			{% block uppermid %}{% endblock %}
+ 		</div>
+ 		<div class="lowermid">
+ 			{% block lowermid %}{% endblock %}
+ 		</div>
+ 		<div class="bottom">
+ 			{% block bottom %}{% endblock %}
+ 			<p style="font-weight: bold;">This site was made by Jeppe EJ and Nick BS as part of their bachelor project</p>
+ 		</div>
+ 	</div>
+</body>
+</html>

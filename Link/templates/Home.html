@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block lowermid %}
+	<div class="content">
+		<form method= "POST" action="{{ url_for('home') }}">
+			{{ form.hidden_tag() }}
+			<fieldset>
+				<legend>Request Data</legend>
+				{{ form.data.label() }}
+				{{ form.data() }}
+				{{ form.submit }}
+			</fieldset>
+		</form>
+	</div>
+{% endblock lowermid%}

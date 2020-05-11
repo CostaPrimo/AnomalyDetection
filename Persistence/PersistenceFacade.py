@@ -1,10 +1,16 @@
 from Acquaintance import iPersistence
 from Persistence import StreamHandler
-
+import types
 
 class persistenceFacade(iPersistence.iPersistence):
     def __init__(self):
         self.stream_handler = StreamHandler.StreamHandler()
+
+    def __get__(self, obj, objtype=None):
+           print("__get__")
+           if obj is None:
+               return self
+           return types.MethodType(self, obj)
 
     def getStreamReadings(self, streamtype):
         #self.stream_handler.setup_building()
@@ -20,3 +26,5 @@ class persistenceFacade(iPersistence.iPersistence):
     def getData(self, key):
         pass
 
+    def printTest(self):
+        print(self.test_text)
