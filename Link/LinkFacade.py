@@ -1,3 +1,4 @@
+from time import time
 from Acquaintance import iLink, iLogic
 import types
 
@@ -6,7 +7,6 @@ class linkFacade(iLink.iLink):
 
     def __init__(self):
         self.logic = iLogic.iLogic
-        self.test_text = ""
 
     def __get__(self, obj, objtype=None):
         print("__get__")
@@ -16,10 +16,11 @@ class linkFacade(iLink.iLink):
 
     def inject_logic(self, iLogic):
         self.logic = iLogic
-        self.test_text = "Link Virker"
 
-    def run(self, main): raise NotImplementedError
-
+    def run(self, main):
+        v = time()
+        print(self.logic.getStreamStatus("humidity"))
+        print(time() - v)
 
     def printTest(self, streamstype):
         return "This data is from the LinkFacade"

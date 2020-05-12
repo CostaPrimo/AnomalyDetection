@@ -10,9 +10,5 @@ link = LinkFacade.linkFacade()
 logic.inject_persistence(persistence)
 link.inject_logic(logic)
 
-'''persistence.printTest()'''
-'''logic.printTest()'''
-'''link.printTest("heje")'''
 print("Starting the application")
 link.run(__name__)
-
