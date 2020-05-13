@@ -17,3 +17,6 @@ class iPersistence(ABC):
 
     @abstractmethod
     def getData(self, key): raise NotImplementedError
+
+    @abstractmethod
+    def playbackReadings(self, readings, offset): raise NotImplementedError

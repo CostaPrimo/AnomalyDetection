@@ -204,7 +204,7 @@ class StreamHandler:
                     rstreams[uuid] = data['Readings']
             return rstreams
 
-    #Given a Dictionary wih UUIDs and readings, return the reading after 0 ms offset
+    #Given a Dictionary wih UUIDs and readings, return the reading after 'x' ms offset
     #Returns a Dictionary with the form {UUID: Reading, UUID: Reading, ...}
     def playbackStreams(self, readings, offset):
         returnDict = {}
@@ -227,6 +227,6 @@ class StreamHandler:
 #---------------------------------------------------------------------------------------------------------------------
     def getStreamReadings(self, type):
         readings = self.findFileReadings(self.getStreamIDs(type))
-        return self.playbackStreams(readings, 3600000)
+        return readings
 #---------------------------------------------------------------------------------------------------------------------
 

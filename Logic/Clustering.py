@@ -1,4 +1,3 @@
-#from numpy import array
 import numpy as np
 from scipy.cluster.vq import vq, kmeans, whiten, kmeans2
 import matplotlib.pyplot as plt
@@ -151,7 +150,7 @@ def whitened(data):
 
 
 def silhuettescore(data):
-    range_n_clusters = [2, 3, 4, 5, 6]
+    range_n_clusters = [8, 9, 10, 11, 12, 13]
     max = 0
     count = 0
     silhouette_avg_max = 0
@@ -192,10 +191,10 @@ def getAnomalies(data):
         if x > 1:
             anomalies = "true"
             count1 = count1+1
-    return test_readings3, anomalies, " Amount of anomalies: ", count1
+    return anomalies, " Amount of anomalies: ", count1
 
 
-print(getAnomalies(test_readings3))
+#print(getAnomalies(test_readings3))
 
 
 #plt.scatter(whitened[:, 0], whitened[:, 1],alpha=0.5)

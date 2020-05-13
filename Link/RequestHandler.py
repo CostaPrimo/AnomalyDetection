@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request
 from forms import request_data
 from Logic import LogicFacade
 from Persistence import PersistenceFacade
+from time import time
 
 
 
@@ -43,5 +44,7 @@ def test900(streamtype):
 
 
 if __main__ == __name__:
+    v = time()
     print(logic.getStreamStatus('humidity'))
+    print(time()-v)
     app.run(debug=True)
