@@ -1,6 +1,3 @@
-import ApexCharts from 'apexcharts'
-type=module
-
 var options = {
           series: [{
             name: 'Jan',
@@ -67,6 +64,7 @@ var options = {
           }
         ],
           chart: {
+          id: 'mychart',
           height: 350,
           type: 'heatmap',
         },
@@ -115,9 +113,38 @@ var options = {
         },
         };
 
-      function heatmap() {
-        console.log("From the function")
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
+        var options2 = {
+          chart: {
+            type: 'line'
+          },
+          series: [{
+            name: 'sales',
+            data: [30,40,35,50,49,60,70,91,125]
+          }],
+          xaxis: {
+            categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
+          }
+        }
+
+
+      function generateData(count, yrange) {
+      var i = 0;
+      var series = [];
+      while (i < count) {
+        var x = (i + 1).toString();
+        var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+        series.push({
+          x: x,
+          y: y
+        });
+        i++;
       }
-      
+      return series;
+    }
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+    function heatmap(){
+      console.log(options)
+      var chart = new ApexCharts(document.querySelector("#chart"), options);
+      chart.render()
+    }

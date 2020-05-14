@@ -1,8 +1,11 @@
 {% extends "layout.html" %}
 {% block uppermid %}
+	<script  src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='HomeScripts.js') }}"></script>
 	<div>
-	<p>Hej Klik denne knap: </p>
-	<button type="button" onclick="heatmap()">Try it</button>
+		<div id="chart"></div>
+		<p>Hej Klik denne knap: </p>
+		<button type="button" onclick="heatmap()">Try it</button>
  	</div>
 {% endblock uppermid %}
 {% block lowermid %}
