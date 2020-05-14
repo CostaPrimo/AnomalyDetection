@@ -20,16 +20,7 @@ class logicFacade(iLogic.iLogic):
 
     def getStreamStatus(self, streamtype):
         readings = self.persistence.getStreamReadings(streamtype)
-        time = 0
-        offset = 0
-        while time <= 3600000:
-            toCluster = []
-            while time <= 60000+offset:
-                toCluster += DataHandler.setUpClustering(time, self.persistence.playbackReadings(readings, time))
-                time += 3000
-            print(Clustering.getAnomalies(np.array(toCluster)))
-            offset += 60000
-        return "success"
+        print(DataHandler.clusterStreams(readings))
 
     def getStreamMetadata(self, streamID): raise NotImplementedError
 

@@ -204,25 +204,6 @@ class StreamHandler:
                     rstreams[uuid] = data['Readings']
             return rstreams
 
-    #Given a Dictionary wih UUIDs and readings, return the reading after 'x' ms offset
-    #Returns a Dictionary with the form {UUID: Reading, UUID: Reading, ...}
-    def playbackStreams(self, readings, offset):
-        returnDict = {}
-        for key in readings:
-            templist = readings[key]
-            time = templist[0][0]+offset
-            count = 0
-            while time >= templist[count][0]:
-                if count+1 < len(templist):
-                    if time >= templist[count+1][0]:
-                        count += 1
-                    else:
-                        break
-                else:
-                    break
-            returnDict[key] = templist[count][1]
-        return returnDict
-
 #Method to be called in the facade
 #---------------------------------------------------------------------------------------------------------------------
     def getStreamReadings(self, type):
