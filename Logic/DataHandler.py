@@ -47,7 +47,7 @@ def clusterStreams(readings):
         time = 0
         offset = 0
         data = []
-        while time <= 7200000:
+        while time <= 10800000:
             toCluster = []
             while time <= 900000 + offset:
                 toCluster += [[time, playbackStream(readings, uuid, time)]]

@@ -204,10 +204,20 @@ class StreamHandler:
                     rstreams[uuid] = data['Readings']
             return rstreams
 
+
+
 #Method to be called in the facade
 #---------------------------------------------------------------------------------------------------------------------
     def getStreamReadings(self, type):
         readings = self.findFileReadings(self.getStreamIDs(type))
         return readings
+
+    ##Given a uuid return the metadata from that stream
+    def getMetaData(self, uuid):
+        metadata = {}
+        with open("../Persistence/streams/%s.json" % uuid) as json_file:
+            data = json.load()
+            metadata[uuid] = data['Metadata']
+        return metadata
 #---------------------------------------------------------------------------------------------------------------------
 

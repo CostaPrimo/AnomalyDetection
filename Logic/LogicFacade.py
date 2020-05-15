@@ -22,6 +22,7 @@ class logicFacade(iLogic.iLogic):
         readings = self.persistence.getStreamReadings(streamtype)
         print(DataHandler.clusterStreams(readings))
 
-    def getStreamMetadata(self, streamID): raise NotImplementedError
+    def getStreamMetadata(self, streamID):
+        return self.persistence.getStreamMetadata()
 
     def editStreamType(self, streamID, newtype): raise NotImplementedError
