@@ -4,13 +4,13 @@ from Logic import LogicFacade
 from Persistence import PersistenceFacade
 
 
-
 app = Flask(__name__)
 __main__ = "__main__"
 app.config['SECRET_KEY'] = 'eShVmYq3s5v8y/B?'
 persistence = PersistenceFacade.persistenceFacade()
 logic = LogicFacade.logicFacade()
 logic.inject_persistence(persistence)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -39,7 +39,7 @@ def test():
     return "test"
 
 
-@app.route('/Test2', methods=['POST','GET'])
+@app.route('/Test2', methods=['POST', 'GET'])
 def test2():
     data = request.args.get('data',  None)
     test4 = request.args.get('test', None)

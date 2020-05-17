@@ -19,7 +19,8 @@ class persistenceFacade(iPersistence.iPersistence):
         self.stream_handler.loadModel()
         return self.stream_handler.getStreamReadings(streamtype)
 
-    def getStreamMetadata(self, streamID): raise NotImplementedError
+    def getStreamMetadata(self, streamID):
+        self.stream_handler.getMetaData(streamID)
 
     def editStreamType(self, streamID, newtype): raise NotImplementedError
 
@@ -27,6 +28,3 @@ class persistenceFacade(iPersistence.iPersistence):
 
     def getData(self, key):
         pass
-
-    def printTest(self):
-        print(self.test_text)
