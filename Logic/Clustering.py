@@ -14,7 +14,7 @@ def whitened(data):
 
 def silhuettescore(data):
     #range_n_clusters = [9, 10, 11, 12, 13, 14]
-    range_n_clusters = [3, 4, 5, 6]
+    range_n_clusters = [3, 4]
     max = 0
     count = 0
     silhouette_avg_max = 0

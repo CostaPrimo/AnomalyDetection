@@ -1,8 +1,7 @@
 from rdflib import Graph, Namespace, URIRef, Literal
-import rdflib
+from rdflib.plugins.sparql import prepareQuery
 import json
 import os
-import requests
 
 
 RDF = Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
@@ -129,10 +128,6 @@ class StreamHandler:
         r = self.g.query(q)
         return list(map(lambda row: list(row), r))
 
-    #Alters information in the model
-    def update(self, q):
-        r = self.g.update(q)
-
     #Cleans up the information from the query and return it in a json structure
     def pprint(self, structure):
         pretty = json.dumps(structure, sort_keys=True, indent=4, separators=(',', ': '))
@@ -146,8 +141,8 @@ class StreamHandler:
     def getStreamIDs(self, type):
         if type == 'temperature':
             stream_q = \
-            '''
-            SELECT DISTINCT ?sensor_uuid
+                '''
+                SELECT DISTINCT ?sensor_uuid
                 WHERE {
                     ?room     rdf:type/brick:subClassOf* brick:Room .
                     ?sensor   rdf:type/brick:subClassOf* brick:Temperature_Sensor .
@@ -156,8 +151,9 @@ class StreamHandler:
 
                     ?sensor   brick:label ?sensor_uuid .
                 }
-            '''
-            return self.pprint(self.query(stream_q))
+                '''
+            prep_q = prepareQuery(stream_q, initNs={"rdf": RDF, "brick": BRICK})
+            return self.pprint(self.query(prep_q))
         elif type == 'co2':
             stream_q = \
                 '''
@@ -171,7 +167,8 @@ class StreamHandler:
                     ?sensor   brick:label ?sensor_uuid .
                 }
                 '''
-            return self.pprint(self.query(stream_q))
+            prep_q = prepareQuery(stream_q, initNs={"rdf": RDF, "brick": BRICK})
+            return self.pprint(self.query(prep_q))
         elif type == 'humidity':
             stream_q = \
                 '''
@@ -185,9 +182,27 @@ class StreamHandler:
                     ?sensor   brick:label ?sensor_uuid .
                 }
                 '''
-            return self.pprint(self.query(stream_q))
+            prep_q = prepareQuery(stream_q, initNs={"rdf": RDF, "brick": BRICK})
+            return self.pprint(self.query(prep_q))
         else:
             return "No such type"
+
+    def updateStreamType(self, uuid, type, newtype):
+        update_q = \
+            '''
+            DELETE { 
+                ?sensor rdf:type/brick:subClassOf* brick:?type .
+                ?sensor brick:label ?uuid .
+            }
+            INSERT {
+                ?sensor rdf:type/brick:subClassOf* brick:?newtype .
+                ?sensor brick:label ?uuid .
+            }
+            WHERE {
+                ?sensor brick:label ?uuid .
+        '''
+        prep_q = prepareQuery(update_q, initNs={"rdf": RDF, "brick": BRICK})
+        self.g.update(prep_q, initBindings={'type': type, 'uuid': uuid, 'newtype': newtype})
 
     #Given a list of streamsIDs find their respective readings and return them
     #Returns a Dictionary with the form {UUID: [Readings], UUID: [Readings,...}
@@ -209,14 +224,13 @@ class StreamHandler:
 #Method to be called in the facade
 #---------------------------------------------------------------------------------------------------------------------
     def getStreamReadings(self, type):
-        readings = self.findFileReadings(self.getStreamIDs(type))
-        return readings
+        return self.findFileReadings(self.getStreamIDs(type))
 
     ##Given a uuid return the metadata from that stream
     def getMetaData(self, uuid):
         metadata = {}
         with open("../Persistence/streams/%s.json" % uuid) as json_file:
-            data = json.load()
+            data = json.load(json_file)
             metadata[uuid] = data['Metadata']
         return metadata
 #---------------------------------------------------------------------------------------------------------------------
