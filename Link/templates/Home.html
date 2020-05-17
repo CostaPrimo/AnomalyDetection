@@ -5,19 +5,20 @@
 	<div>
 		<div id="chart"></div>
 		<p>Hej Klik denne knap: </p>
-		<button type="button" onclick="heatmap()">Try it</button>
+		<button type="button" onclick="heatmap( {{ data }} )">Try it</button>
+ 	</div>
+ 	<div>
+ 		<form method="POST" action="{{ url_for('home') }}">
+ 		<select name="dropdown" id="streamtype">
+ 			<option value="null">Dick</option>
+  			<option value="humidity">Humidity</option>
+  			<option value="co2">CO2</option>
+  			<option value="temperature">Temperature</option>
+		</select>
+    	<input type="submit" onclick="heatmap( {{ data }} )">
+		</form>
+		<p>Data: {{ data }}</p>
  	</div>
 {% endblock uppermid %}
 {% block lowermid %}
-	<div class="content">
-		<form method= "POST" action="{{ url_for('home') }}">
-			{{ form.hidden_tag() }}
-			<fieldset>
-				<legend>Request Data</legend>
-				{{ form.data.label() }}
-				{{ form.data() }}
-				{{ form.submit }}
-			</fieldset>
-		</form>
-	</div>
 {% endblock lowermid%}

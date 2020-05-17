@@ -141,10 +141,15 @@ var options = {
       }
       return series;
     }
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
 
-    function heatmap(){
-      console.log(options)
-      var chart = new ApexCharts(document.querySelector("#chart"), options);
-      chart.render()
+    function heatmap(streamdata){
+      console.log(streamdata)
+      //console.log(options)
+      //var chart = new ApexCharts(document.querySelector("#chart"), options);
+      //chart.render()
     }
+
+
+
+
+    
