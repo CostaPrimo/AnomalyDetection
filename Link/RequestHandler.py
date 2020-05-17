@@ -44,5 +44,4 @@ def test900(streamtype):
 
 if __main__ == __name__:
     #logic.getStreamStatus('humidity')
-    print(logic.getStreamMetadata('0a34efa4-a3de-5dc1-a70f-904e10faf997'))
     app.run(debug=True)
