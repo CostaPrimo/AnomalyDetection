@@ -65,7 +65,7 @@ var options = {
         ],
           chart: {
           id: 'mychart',
-          height: 350,
+          height: 1000,
           type: 'heatmap',
         },
         plotOptions: {
@@ -76,25 +76,25 @@ var options = {
             colorScale: {
               ranges: [{
                   from: -30,
-                  to: 5,
-                  name: 'low',
+                  to: 0,
+                  name: 'None',
                   color: '#00A100'
                 },
                 {
-                  from: 6,
-                  to: 20,
-                  name: 'medium',
-                  color: '#128FD9'
+                  from: 1,
+                  to: 10,
+                  name: 'Low',
+                  color: '#FFFF00'
                 },
                 {
-                  from: 21,
-                  to: 45,
-                  name: 'high',
-                  color: '#FFB200'
+                  from: 11,
+                  to: 30,
+                  name: 'Medium',
+                  color: '#FFA500'
                 },
                 {
-                  from: 46,
-                  to: 55,
+                  from: 31,
+                  to: 2000,
                   name: 'extreme',
                   color: '#FF0000'
                 }
@@ -109,22 +109,10 @@ var options = {
           width: 1
         },
         title: {
-          text: 'HeatMap Chart with Color Range'
+          text: 'HeatMap of Anomalies'
         },
         };
 
-        var options2 = {
-          chart: {
-            type: 'line'
-          },
-          series: [{
-            name: 'sales',
-            data: [30,40,35,50,49,60,70,91,125]
-          }],
-          xaxis: {
-            categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
-          }
-        }
 
 
       function generateData(count, yrange) {
@@ -142,11 +130,42 @@ var options = {
       return series;
     }
 
+
     function heatmap(streamdata){
-      console.log(streamdata)
-      //console.log(options)
-      //var chart = new ApexCharts(document.querySelector("#chart"), options);
-      //chart.render()
+      chart.destroy() //Sørg for denne ikke ødelægger noget, sat på mens du er træt, og ikke 100%
+      var dict = {} 
+      dict = streamdata
+      var data1 = []
+      var series1 = []
+       var i = 0;
+       var t = 0;
+      for (var key in dict) { 
+        dist = dict[key]
+        i = 0
+        t = 0
+        while (i < dist.length) {
+          dist2 = dist[Object.keys(dist)[t]]
+          x = dist2[Object.keys(dist2)[0]]
+          y = dist2[Object.keys(dist2)[1]]
+          series1.push({
+            x: x,
+            y: y
+          });
+          i++;
+          t++;
+        } 
+        data1.push({
+          name: key,
+          data: series1
+        });
+        series1 = []
+      }
+
+      options.series = data1
+      console.log(data1)
+      var chart = new ApexCharts(document.querySelector("#chart"), options);
+      chart.render()
+
     }
 
 
