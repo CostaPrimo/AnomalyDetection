@@ -130,9 +130,8 @@ var options = {
       return series;
     }
 
-
+    var hetmapon = false;
     function heatmap(streamdata){
-      chart.destroy() //Sørg for denne ikke ødelægger noget, sat på mens du er træt, og ikke 100%
       var dict = {} 
       dict = streamdata
       var data1 = []
@@ -164,7 +163,9 @@ var options = {
       options.series = data1
       console.log(data1)
       var chart = new ApexCharts(document.querySelector("#chart"), options);
+    
       chart.render()
+      hetmapon = true
 
     }
 
