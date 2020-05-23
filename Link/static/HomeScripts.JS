@@ -1,67 +1,5 @@
 var options = {
-          series: [{
-            name: 'Jan',
-            data: generateData(20, {
-              min: -30,
-              max: 55
-            })
-          },
-          {
-            name: 'Feb',
-            data: generateData(20, {
-              min: -30,
-              max: 55
-            })
-          },
-          {
-            name: 'Mar',
-            data: generateData(20, {
-              min: -30,
-              max: 55
-            })
-          },
-          {
-            name: 'Apr',
-            data: generateData(20, {
-              min: -30,
-              max: 55
-            })
-          },
-          {
-            name: 'May',
-            data: generateData(20, {
-              min: -30,
-              max: 55
-            })
-          },
-          {
-            name: 'Jun',
-            data: generateData(20, {
-              min: -30,
-              max: 55
-            })
-          },
-          {
-            name: 'Jul',
-            data: generateData(20, {
-              min: -30,
-              max: 55
-            })
-          },
-          {
-            name: 'Aug',
-            data: generateData(20, {
-              min: -30,
-              max: 55
-            })
-          },
-          {
-            name: 'Sep',
-            data: generateData(20, {
-              min: -30,
-              max: 55
-            })
-          }
+          series: [
         ],
           chart: {
           id: 'mychart',
@@ -75,7 +13,7 @@ var options = {
             useFillColorAsStroke: true,
             colorScale: {
               ranges: [{
-                  from: -30,
+                  from: -1,
                   to: 0,
                   name: 'None',
                   color: '#00A100'
@@ -114,7 +52,7 @@ var options = {
         };
 
 
-
+        //Gammel metode til at create random data til heatmappet
       function generateData(count, yrange) {
       var i = 0;
       var series = [];
