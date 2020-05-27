@@ -67,11 +67,10 @@ var options = {
       }
       return series;
     }
-
-    var hetmapon = false;
-    function heatmap(streamdata){
+    //Takes the data recieved from the Flask backend, and sets it up into a format that the heatmaps options can read
+    function setUpData(streamdatas){
       var dict = {} 
-      dict = streamdata
+      dict = streamdatas
       var data1 = []
       var series1 = []
        var i = 0;
@@ -97,15 +96,63 @@ var options = {
         });
         series1 = []
       }
-
-      options.series = data1
-      console.log(data1)
-      var chart = new ApexCharts(document.querySelector("#chart"), options);
-    
-      chart.render()
-      hetmapon = true
-
+      return data1
     }
+
+    function timeinterval(streamdata1, time){
+      data1 = streamdata1
+      var n = 0;
+      heatmapdata = []
+      heatmapArrayData = []
+      for (var key in data1) {
+        temporary = data1[key] 
+        currentStreamName = temporary[Object.keys(temporary)[0]]
+        currentStreamData = temporary[Object.keys(temporary)[1]]
+        n = 0;  
+        while (n < time + 1){
+          heatmapArrayData.push(currentStreamData[n])
+          n++
+        }
+        heatmapdata.push({
+          name: currentStreamName,
+          data: heatmapArrayData
+        });
+        heatmapArrayData = []
+      }
+      return heatmapdata
+    }
+
+    function heatmap(streamdata){
+      //creating the chart
+      var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+      var data = setUpData(streamdata)
+      console.log(data)
+
+      data1 = data[0]
+      length = data1[Object.keys(data1)[1]].length
+      
+      var intervalData = []
+      var i = 0;
+      var interval = setInterval(() => {
+        if (i < length) {
+          intervalData = timeinterval(data, i)
+          if (i == 0) {
+            options.series = intervalData
+            chart.render()
+          }
+          else{
+            chart.updateSeries(intervalData)
+          }
+        }
+        else if(i > length) {
+          clearInterval(interval)
+          console.log("Interval closed")
+        }
+        i++
+      }, 15000);
+    }
+
 
 
 
