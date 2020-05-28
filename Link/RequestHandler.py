@@ -16,6 +16,7 @@ logic.inject_persistence(persistence)
 def home():
     #form = request_data()
     data = ""
+    confirmation = ""
     if request.method == 'POST':
         dropdown = request.form.get('dropdown', None)
         print("The value in dropdown: ", dropdown)
@@ -25,8 +26,9 @@ def home():
         elif dropdown != 'null':
             print("kører test900")
             data = test900(dropdown)
+            confirmation = "ready"
             print("Efter test900")
-            return render_template('Home.html', title='Home', data=data)
+            return render_template('Home.html', title='Home', data=data, confirmation=confirmation)
         elif dropdown == 'null':
             return render_template('Home.html', title='Home')
     elif request.method == 'GET':

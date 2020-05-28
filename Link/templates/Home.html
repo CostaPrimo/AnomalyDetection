@@ -4,18 +4,18 @@
 	<script type="text/javascript" src="{{ url_for('static', filename='HomeScripts.js') }}"></script>
 	<div>
 		<div id="chart"></div>
-		<p>Hej Klik denne knap: </p>
-		<button type="button" onclick="heatmap( {{ data }} )">Try it</button>
+		<p>Generate heatmap when data has been requested and arrived </p>
+		<button type="button" onclick="heatmap( {{ data }} )">Generate Heatmap</button>
  	</div>
  	<div>
  		<form method="POST" action="{{ url_for('home') }}">
  		<select name="dropdown" id="streamtype">
- 			<option value="null">Null</option>
+ 			<option value="null"></option>
   			<option value="humidity">Humidity</option>
   			<option value="co2">CO2</option>
   			<option value="temperature">Temperature</option>
 		</select>
-    	<input type="submit">
+    	<button type="submit">Request Data</button>
 		</form>
 		<p>Data: {{ data }}</p>
  	</div>

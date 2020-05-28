@@ -3,9 +3,10 @@ var options = {
         ],
           chart: {
           id: 'mychart',
-          height: 1000,
+          height: 2500,
+          width: '100%',
           type: 'heatmap',
-        },
+        },  
         plotOptions: {
           heatmap: {
             shadeIntensity: 0.5,
@@ -48,6 +49,16 @@ var options = {
         },
         title: {
           text: 'HeatMap of Anomalies'
+        },
+        xaxis: {
+           rotateAlways: true
+        },
+        yaxis: {
+            labels: {
+               minWidth: 0,
+               maxWidth: 240,
+               offsetY: 5
+            },
         },
         };
 

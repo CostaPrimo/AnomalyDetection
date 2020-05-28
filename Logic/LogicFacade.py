@@ -21,7 +21,7 @@ class logicFacade(iLogic.iLogic):
         self.persistence = iPersistence
         self.humidityreadings = self.persistence.getStreamReadings("humidity")
         self.temperaturereadings = self.persistence.getStreamReadings("temperature")
-        #self.co2readings = self.persistence.getStreamReadings("co2")
+        self.co2readings = self.persistence.getStreamReadings("co2")
 
     def getStreamStatus(self, streamtype):
         if streamtype == "humidity":
