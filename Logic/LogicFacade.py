@@ -7,7 +7,6 @@ class logicFacade(iLogic.iLogic):
 
     def __init__(self):
         self.persistence = iPersistence.iPersistence
-        self.test_text = "Fra logic"
         self.humidityreadings = {}
         self.temperaturereadings = {}
         self.co2readings = {}
