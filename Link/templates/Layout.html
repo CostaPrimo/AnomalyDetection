@@ -11,12 +11,10 @@
     {% endif %}
 </head>
 <body>
-	<div class="outerlayer">
-		<div class="navigation">
-			<a href="{{ url_for('home') }}" class="nav">Go to home</a>
- 			<a href="{{ url_for('test') }}" class="nav">Go to test</a>
- 			<a href="{{ url_for('test2') }}"class="nav">Go to test2</a>
+	<div class="navigation">
+			<a href="{{ url_for('home') }}" class="nav">Home</a>
  		</div>
+	<div class="outerlayer">
  		<div class="header">
  			{% block header %}{% endblock %}
  		</div>
