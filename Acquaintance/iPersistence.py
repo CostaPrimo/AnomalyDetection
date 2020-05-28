@@ -10,7 +10,7 @@ class iPersistence(ABC):
     def getStreamMetadata(self, streamID): raise NotImplementedError
 
     @abstractmethod
-    def editStreamType(self, streamID, newtype): raise NotImplementedError
+    def editStreamType(self, streamID, currenttype, newtype): raise NotImplementedError
 
     @abstractmethod
     def saveData(self, key, value): raise NotImplementedError
