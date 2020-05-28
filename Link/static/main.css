@@ -1,13 +1,11 @@
 .navigation {
 	width: 4.5%;
 	height: 100%;
-	border-style: solid;
 }
 
 .outerlayer {
 	width: 100%;
 	height: 100%;
-	float: right;
 }
 
 .header {
