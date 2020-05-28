@@ -53,4 +53,4 @@ def test900(streamtype):
 
 
 if __main__ == __name__:
-    app.run()
+    app.run(debug=False)
