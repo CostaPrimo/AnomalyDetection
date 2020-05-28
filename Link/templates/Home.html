@@ -1,14 +1,24 @@
 {% extends "layout.html" %}
-{% block lowermid %}
-	<div class="content">
-		<form method= "POST" action="{{ url_for('home') }}">
-			{{ form.hidden_tag() }}
-			<fieldset>
-				<legend>Request Data</legend>
-				{{ form.data.label() }}
-				{{ form.data() }}
-				{{ form.submit }}
-			</fieldset>
+{% block uppermid %}
+	<script  src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='HomeScripts.js') }}"></script>
+	<div>
+		<div id="chart"></div>
+		<p>Generate heatmap when data has been requested and arrived </p>
+		<button type="button" onclick="heatmap( {{ data }} )">Generate Heatmap</button>
+ 	</div>
+ 	<div>
+ 		<form method="POST" action="{{ url_for('home') }}">
+ 		<select name="dropdown" id="streamtype">
+ 			<option value="null"></option>
+  			<option value="humidity">Humidity</option>
+  			<option value="co2">CO2</option>
+  			<option value="temperature">Temperature</option>
+		</select>
+    	<button type="submit">Request Data</button>
 		</form>
-	</div>
+		<p>Data: {{ confirmation }}</p>
+ 	</div>
+{% endblock uppermid %}
+{% block lowermid %}
 {% endblock lowermid%}

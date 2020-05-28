@@ -14,15 +14,26 @@ logic.inject_persistence(persistence)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    form = request_data()
+    #form = request_data()
+    data = ""
+    confirmation = ""
     if request.method == 'POST':
-        if form.validate_on_submit():
-            data = request.form.get('data') #Det data vi skriver i input feltet på homepage
-            test1 = test900(data)
-            return redirect(url_for('test2', data=data, test=test1))
-        return render_template('Home.html', title='Home', form=form)
+        dropdown = request.form.get('dropdown', None)
+        print("The value in dropdown: ", dropdown)
+        if dropdown == None:
+            print("None1")
+            return render_template('Home.html', title='Home')
+        elif dropdown != 'null':
+            print("kører test900")
+            data = test900(dropdown)
+            confirmation = "ready"
+            print("Efter test900")
+            return render_template('Home.html', title='Home', data=data, confirmation=confirmation)
+        elif dropdown == 'null':
+            return render_template('Home.html', title='Home')
     elif request.method == 'GET':
-        return render_template('Home.html', title='Home', form=form)
+        return render_template('Home.html', title='Home')
+
 
 
 @app.route('/Test')
@@ -39,6 +50,7 @@ def test2():
 
 def test900(streamtype):
     result = logic.getStreamStatus(streamtype)
+    print(result)
     return result
 
 
