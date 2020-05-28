@@ -59,6 +59,9 @@ var options = {
                maxWidth: 240,
                offsetY: 5
             },
+            axisBorder: {
+              offsetY: 10
+            }
         },
         };
 
