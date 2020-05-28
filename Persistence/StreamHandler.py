@@ -12,7 +12,7 @@ N = Namespace('http://bachelor.sdu.dk/jeppe_nick/test/example#')
 
 
 '''
-#Method used to remove streams without readings, list stream types, and count each type of stream
+# Method used to remove streams without readings, list stream types, and count each type of stream
 def count_and_purge_streams():
     stream_descriptions = []
     stream_counts = {}
@@ -43,11 +43,11 @@ class StreamHandler:
         self.g = Graph()
         self.files = []
 
-#For creating brick model of our fictive building
-#----------------------------------------------------------------------------------------------------------------------
+# For creating brick model of our fictive building
+# ----------------------------------------------------------------------------------------------------------------------
 
-    #Setup the foundation for the Brick modelling of the build
-    #Determines which sensor types will be added to the model of the building
+    # Setup the foundation for the Brick modelling of the build
+    # Determines which sensor types will be added to the model of the building
     def model(self):
         del self.g
         self.g = Graph()
@@ -68,8 +68,8 @@ class StreamHandler:
                 if description == "Temperature Value" or description == 'CO2 Value' or description == 'Humidity':
                     self.files.append(tempfile)
 
-    #Setup the building model and saves it
-    #1 Building, 1 Floor, 1 Room for every sensor
+    # Setup the building model and saves it
+    # 1 Building, 1 Floor, 1 Room for every sensor
     def setup_building(self):
         del self.g
         self.g = Graph()
@@ -114,30 +114,36 @@ class StreamHandler:
                 self.g.add((sensor, BRICK.pointOf, rooms.pop(0)))
         self.g.serialize('../Persistence/building_test3.ttl', 'turtle')
 
-#For loading our model and accessing/altering information in it
-#----------------------------------------------------------------------------------------------------------------------
+# For loading our model and accessing/altering information in it
+# ----------------------------------------------------------------------------------------------------------------------
 
-    #Loads the building model
+    # Loads the building model
     def loadModel(self):
         del self.g
         self.g = Graph()
-        self.g.parse('../Persistence/building_test3.ttl', format='turtle')
+        try:
+            self.g.parse('../Persistence/building_test3.ttl', format='turtle')
+        except OSError:
+            print("No model found, generating new model")
+            self.setup_building()
+            print("New model generated, loading model")
+            self.loadModel()
 
-    #Queries on the model
+    # Queries on the model
     def query(self, q):
         r = self.g.query(q)
         return list(map(lambda row: list(row), r))
 
-    #Cleans up the information from the query and return it in a json structure
+    # Cleans up the information from the query and return it in a json structure
     def pprint(self, structure):
         pretty = json.dumps(structure, sort_keys=True, indent=4, separators=(',', ': '))
         return pretty
 
-#Methods for extracting and manipulating data
+# Methods for extracting and manipulating data
 # ----------------------------------------------------------------------------------------------------------------------
 
-    #Given a type match, return IDs for all the streams of that type
-    #Returns an array with the following structure [[UUID],[UUID],...]
+    # Given a type match, return IDs for all the streams of that type
+    # Returns an array with the following structure [[UUID],[UUID],...]
     def getStreamIDs(self, type):
         if type == 'temperature':
             stream_q = \
@@ -187,7 +193,7 @@ class StreamHandler:
         else:
             return "No such type"
 
-    def updateStreamType(self, uuid, type, newtype):
+    def updateStreamType(self, uuid, currenttype, newtype):
         update_q = \
             '''
             DELETE { 
@@ -202,10 +208,10 @@ class StreamHandler:
                 ?sensor brick:label ?uuid .
         '''
         prep_q = prepareQuery(update_q, initNs={"rdf": RDF, "brick": BRICK})
-        self.g.update(prep_q, initBindings={'type': type, 'uuid': uuid, 'newtype': newtype})
+        self.g.update(prep_q, initBindings={'type': currenttype, 'uuid': uuid, 'newtype': newtype})
 
-    #Given a list of streamsIDs find their respective readings and return them
-    #Returns a Dictionary with the form {UUID: [Readings], UUID: [Readings,...}
+    # Given a list of streamsIDs find their respective readings and return them
+    # Returns a Dictionary with the form {UUID: [Readings], UUID: [Readings,...}
     def findFileReadings(self, streams):
         rstreams = {}
         if streams == "No such type":
@@ -214,15 +220,18 @@ class StreamHandler:
             ids = streams.replace(' ', '').replace('[', '').replace(']', '').replace('\n', '').replace('"', '').split(
                 ',')
             for uuid in ids:
+                readings = []
+                #print(uuid)
                 with open("../Persistence/streams/%s.json" % uuid)as json_file:
                     data = json.load(json_file)
-                    rstreams[uuid] = data['Readings']
+                    temp = data['Readings']
+                    for number in range(int(len(temp)/2)):
+                        readings.append(temp.pop(0))
+                    rstreams[uuid] = readings
             return rstreams
 
-
-
-#Method to be called in the facade
-#---------------------------------------------------------------------------------------------------------------------
+# Method to be called in the facade
+# ---------------------------------------------------------------------------------------------------------------------
     def getStreamReadings(self, type):
         return self.findFileReadings(self.getStreamIDs(type))
 
@@ -233,5 +242,5 @@ class StreamHandler:
             data = json.load(json_file)
             metadata[uuid] = data['Metadata']
         return metadata
-#---------------------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------
 

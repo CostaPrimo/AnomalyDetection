@@ -36,4 +36,5 @@ class logicFacade(iLogic.iLogic):
     def getStreamMetadata(self, streamID):
         return self.persistence.getStreamMetadata(streamID)
 
-    def editStreamType(self, streamID, newtype): raise NotImplementedError
+    def editStreamType(self, streamID, newtype):
+        return self.persistence.editStreamType(streamID, newtype)
