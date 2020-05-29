@@ -1,5 +1,4 @@
 from flask import Flask, render_template, redirect, url_for, request
-from forms import request_data
 from Logic import LogicFacade
 from Persistence import PersistenceFacade
 
@@ -11,10 +10,10 @@ persistence = PersistenceFacade.persistenceFacade()
 logic = LogicFacade.logicFacade()
 logic.inject_persistence(persistence)
 
-
+#Routing method, takes both GET and POST forms
+#If its a POST method, it checks for streamtype, and if not null, runs the method getStreamStatus, and returns the result of that to the frontend.
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    #form = request_data()
     data = ""
     confirmation = ""
     if request.method == 'POST':
@@ -22,35 +21,23 @@ def home():
         print("The value in dropdown: ", dropdown)
         if dropdown == None:
             print("None1")
-            return render_template('Home.html', title='Home')
+            confirmation = 'Choose a type'
+            return render_template('Home.html', title='Home', confirmation=confirmation)
         elif dropdown != 'null':
-            print("kører test900")
-            data = test900(dropdown)
+            print("kører getStreamStatus")
+            data = getStreamStatus(dropdown)
             confirmation = "ready"
-            print("Efter test900")
+            print("Efter getStreamStatus")
             return render_template('Home.html', title='Home', data=data, confirmation=confirmation)
         elif dropdown == 'null':
-            return render_template('Home.html', title='Home')
+            confirmation = 'Choose a type'
+            return render_template('Home.html', title='Home', confirmation=confirmation)
     elif request.method == 'GET':
         return render_template('Home.html', title='Home')
 
-
-
-@app.route('/Test')
-def test():
-    return "test"
-
-
-@app.route('/Test2', methods=['POST', 'GET'])
-def test2():
-    data = request.args.get('data',  None)
-    test4 = request.args.get('test', None)
-    return render_template('Test2.html', data=data, title="Test2", test=test4)
-
-
-def test900(streamtype):
+#Returns the result of logic facades getStreamStatus
+def getStreamStatus(streamtype):
     result = logic.getStreamStatus(streamtype)
-    print(result)
     return result
 
 

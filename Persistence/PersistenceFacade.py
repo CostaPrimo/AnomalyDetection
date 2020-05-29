@@ -21,7 +21,3 @@ class persistenceFacade(iPersistence.iPersistence):
 
     def editStreamType(self, streamID, currenttype, newtype):
         return self.stream_handler.updateStreamType(streamID, currenttype, newtype)
-
-    def saveData(self, key, value): raise NotImplementedError
-
-    def getData(self, key): raise NotImplementedError
