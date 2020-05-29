@@ -1,4 +1,4 @@
-from rdflib import Graph, Namespace, URIRef, Literal
+from rdflib import Graph, Namespace, Literal
 from rdflib.plugins.sparql import prepareQuery
 import json
 import os
@@ -10,7 +10,6 @@ OWL = Namespace('http://www.w3.org/2002/07/owl#')
 BRICK = Namespace('https://brickschema.org/schema/1.1.0/Brick#')
 N = Namespace('http://bachelor.sdu.dk/jeppe_nick/test/example#')
 
-#Gemme denne her? eller er det den opdateret version som virker?
 '''
 # Method used to remove streams without readings, list stream types, and count each type of stream
 def count_and_purge_streams():
@@ -112,7 +111,7 @@ class StreamHandler:
                 self.g.add((sensor, RDF.type, BRICK['Humidity']))
                 self.g.add((sensor, BRICK.label, Literal(UUID)))
                 self.g.add((sensor, BRICK.pointOf, rooms.pop(0)))
-        self.g.serialize('../Persistence/building_test3.ttl', 'turtle')
+        self.g.serialize('../Persistence/test_building.ttl', 'turtle')
 
 # For loading our model and accessing/altering information in it
 # ----------------------------------------------------------------------------------------------------------------------
@@ -122,11 +121,12 @@ class StreamHandler:
         del self.g
         self.g = Graph()
         try:
-            self.g.parse('../Persistence/building_test3.ttl', format='turtle')
+            print("Loading model")
+            self.g.parse('../Persistence/test_building.ttl', format='turtle')
         except OSError:
             print("No model found, generating new model")
             self.setup_building()
-            print("New model generated, loading model")
+            print("New model generated")
             self.loadModel()
 
     # Queries on the model
@@ -193,6 +193,8 @@ class StreamHandler:
         else:
             return "No such type"
 
+    #NotSupported
+    #NotTested
     def updateStreamType(self, uuid, currenttype, newtype):
         update_q = \
             '''

@@ -18,9 +18,11 @@ class logicFacade(iLogic.iLogic):
 
     def inject_persistence(self, iPersistence):
         self.persistence = iPersistence
+        print("Loading readings")
         self.humidityreadings = self.persistence.getStreamReadings("humidity")
         self.temperaturereadings = self.persistence.getStreamReadings("temperature")
         self.co2readings = self.persistence.getStreamReadings("co2")
+        print("Readings loaded")
 
     def getStreamStatus(self, streamtype):
         if streamtype == "humidity":
@@ -35,5 +37,7 @@ class logicFacade(iLogic.iLogic):
     def getStreamMetadata(self, streamID):
         return self.persistence.getStreamMetadata(streamID)
 
+    #NotSupported
+    #NotTested
     def editStreamType(self, streamID, newtype):
         return self.persistence.editStreamType(streamID, newtype)
