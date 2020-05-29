@@ -10,7 +10,7 @@ OWL = Namespace('http://www.w3.org/2002/07/owl#')
 BRICK = Namespace('https://brickschema.org/schema/1.1.0/Brick#')
 N = Namespace('http://bachelor.sdu.dk/jeppe_nick/test/example#')
 
-
+#Gemme denne her? eller er det den opdateret version som virker?
 '''
 # Method used to remove streams without readings, list stream types, and count each type of stream
 def count_and_purge_streams():
