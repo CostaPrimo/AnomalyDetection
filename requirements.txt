@@ -9,7 +9,7 @@ idna==2.9
 isodate==0.6.0
 itsdangerous==1.1.0
 Jinja2==2.11.3
-joblib==0.14.1
+joblib==1.2.0
 kiwisolver==1.2.0
 MarkupSafe==1.1.1
 matplotlib==3.2.1
